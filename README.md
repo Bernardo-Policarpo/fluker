@@ -11,18 +11,18 @@ Fluker é uma rede social em desenvolvimento criada por um grupo de amigos, com 
 
 ## 📖 Visão Geral
 
-O **Fluker** busca unir aprendizado prático em desenvolvimento web e diversão, criando uma experiência social moderna e leve.  
-Nosso foco está em **funcionalidades essenciais** de uma rede social, mas com **tecnologias simples** e **gestão de dados via SQLITE3**, facilitando o entendimento e a colaboração entre os desenvolvedores.
+O **Fluker** busca unir aprendizado prático em desenvolvimento web e diversão, criando uma experiência social moderna e leve.
+Nosso foco está em **funcionalidades essenciais** de uma rede social, agora com **armazenamento em banco de dados SQLite**, garantindo mais confiabilidade e escalabilidade.
 
 ---
 
 ## 🚀 Funcionalidades
 
-✅ **Sistema de postagens** — crie, e visualize postagens de outros usuários.  
-✅ **Notificações** — receba alertas sobre novas interações.  
-✅ **Chat integrado** — converse com outros usuários dentro da própria plataforma.  
-✅ **Autenticação de usuário** — login, logout e gerenciamento de sessão.  
-✅ **Interface intuitiva** — navegação simples e visual limpo.  
+✅ **Sistema de postagens** — crie, e visualize postagens de outros usuários.
+✅ **Notificações** — receba alertas sobre novas interações.
+✅ **Chat integrado** — converse com outros usuários dentro da própria plataforma.
+✅ **Autenticação de usuário** — login, logout e gerenciamento de sessão.
+✅ **Interface intuitiva** — navegação simples e visual limpo.
 
 *(Mais recursos em breve!)*
 
@@ -30,19 +30,18 @@ Nosso foco está em **funcionalidades essenciais** de uma rede social, mas com *
 
 ## 🧠 Tecnologias Utilizadas
 
-- **Python** — linguagem principal do projeto  
-- **Flask** — framework web usado para rotas e views  
-- **HTML, CSS e JavaScript** — para o front-end e interação do usuário  
-- **SQLITE3** — utilizado como sistema principal de armazenamento de dados (usuários, postagens, mensagens, etc.)  
-- **PythonAnywhere** — hospedagem e deploy do projeto  
+* **Python** — linguagem principal do projeto
+* **Flask** — framework web para rotas e APIs
+* **React** — usado no front-end para componentes interativos e atualização dinâmica
+* **HTML, CSS e JavaScript** — base da interface e integração com React
+* **SQLite3** — banco de dados principal (usuários, postagens, mensagens, notificações)
+* **PythonAnywhere** — hospedagem e deploy do projeto** — hospedagem e deploy do projeto
 
 ---
 
 ## 🗂️ Estrutura do Projeto
 
 Organização do repositório:
-
-###
 
 ```text
 fluker/
@@ -51,7 +50,7 @@ fluker/
 ├── README.md
 ├── requirements.txt
 ├── src/
-│   ├── data/
+│   ├── data/                   
 │   │   ├── createDataBase.py
 │   │   └── database.db
 │   │
@@ -86,72 +85,66 @@ fluker/
 
 ---
 
-### 📂 `src/data/`
-Armazena todos os arquivos **CSV** usados como banco de dados do Fluker.
+## 📂 `src/data/`
 
-- **`users.csv`** → dados de cadastro dos usuários (nome, email, senha, etc.)  
-- **`posts.csv`** → postagens criadas pelos usuários (texto, autor, data)  
-- **`messages.csv`** → mensagens trocadas no chat integrado  
-- **`notifications.csv`** → notificações de novas postagens, mensagens ou interações  
+Armazena todos os arquivos relacionados ao banco de dados SQLite do Fluker.
 
-> Esses arquivos substituem o uso de um banco de dados tradicional, mantendo o projeto leve e fácil de compreender.
+* **`database.db`** → contém todas as tabelas e dados do sistema
+* **`createDataBase.py`** → script responsável por criar e estruturar o banco de dados SQLite (tabelas de usuários, posts, mensagens, notificações)
+
+> Agora não são mais utilizados arquivos CSV. Todo armazenamento está centralizado em um único banco SQLite3, mais seguro e eficiente.
 
 ---
 
-### 📂 `src/pages/`
+## 📂 `src/pages/`
+
 Contém as **páginas HTML** que formam a interface visual da rede social.
 
-- **`index.html`** → página inicial do site (login principal)  
-- **`createaccount.html`** → tela de cadastro para novos usuários  
-- **`feed.html`** → página principal do usuário, onde ele vê postagens e interage  
-- **`recoverypassword.html`** → página de recuperação de senha (envio de email ou redefinição)
+* **`index.html`** → página inicial (login)
+* **`createaccount.html`** → tela de cadastro
+* **`feed.html`** → página principal com postagens
+* **`recoverypassword.html`** → recuperação de senha
 
 ---
 
-### 📂 `src/static/`
-Armazena todos os arquivos estáticos servidos pelo Flask (sem renderização Jinja). São entregues “como estão” ao navegador.
+## 📂 `src/static/`
 
-- 📁 `css/`
-  - Folhas de estilo responsáveis pelo visual das páginas.
-  - `styleLogin.css` → estilos da tela de login
-  - `styleRecoverPassword.css` → estilos da tela de recuperação de senha
-  - `styleFeed.css` → estilos do feed de postagens
+Armazena todos os arquivos estáticos entregues diretamente ao navegador.
 
-- 📁 `scripts/`
-  - JavaScript do cliente: interatividade, eventos e chamadas às APIs.
-  - `script.js` → inicializações gerais, handlers (curtir, etc.)
+### 📁 `css/`
 
-- 📁 `images/`
-  - Ícones e imagens da interface.
-  - `logo.png`, `Logo-Fluker.png`, `logo1.png` → variantes de logotipo
-  - `coracao.png`, `redheart.png` → ícones de curtida
-  - `sino.png` → ícone de notificação
-  - `perfil.jpg` → avatar padrão
+Define o visual de cada página.
 
-  ---
+### 📁 `scripts/`
 
-### ⚙️ `.git/`
-Pasta interna do Git — **não deve ser alterada manualmente.**  
-Armazena todo o histórico de commits, branches e configurações do repositório.
+JavaScript de interação com o usuário e comunicação com o Flask.
+
+### 📁 `images/`
+
+Ícones e imagens usadas na interface.
+
+---
+
+## ⚙️ `.git/`
+
+Pasta interna do Git com o histórico de commits e branches. Não deve ser modificada.
 
 ---
 
 ## 📅 Roadmap / Próximos Passos
 
-🔹 Melhorar o sistema de perfil e personalização de usuários  
-🔹 Adicionar upload de imagens para postagens e perfis  
-🔹 Implementar sistema de pesquisa e comentários  
-🔹 Migrar para banco de dados relacional (SQLite ou PostgreSQL)  
+🔹 Melhorias no sistema de perfil e personalização
+🔹 Upload de imagens em postagens
+🔹 Implementação de comentários e sistema de busca
+🔹 Integração de WebSockets para chat e notificações em tempo real
+🔹 Possível migração futura para PostgreSQL caso o projeto cresça
 
 ---
 
 ## 👥 Equipe de Desenvolvimento
 
-- 👨‍💻 **Bernado** — desenvolvimento full-stack / coordenação do projeto — desenvolvimento colaborativo
-- 👨‍💻 **Ruan** — implementação do banco de dado(csv) e estrutura  principal back-end — desenvolvimento colaborativo
-- 👨‍💻 **Lucas** — responsável pelo back-end e pela lógica da aplicação. — desenvolvimento colaborativo
-- 👨‍💻 **Pablo** — responsável pelo Front-end — desenvolvimento colaborativo
-- 👨‍💻 **Gabriel** — responsável pelo Front-end — desenvolvimento colaborativo
-
----
-
+* 👨‍💻 **Bernado** — Full-stack / Coordenação
+* 👨‍💻 **Ruan** — Banco de Dados (SQLite) / Back-end principal
+* 👨‍💻 **Lucas** — Lógica do sistema / Back-end
+* 👨‍💻 **Pablo** — Front-end
+* 👨‍💻 **Gabriel** — Front-end
