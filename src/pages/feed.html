@@ -87,6 +87,7 @@
             </div>
 
             <h2>{{ profile_user.username }}</h2>
+            <h2>Amigos: {{ friends_count }}</h2>
 
             {% if not is_my_profile %} {% if are_we_friends %}
             <p class="friend-status">Amigos</p>
@@ -130,6 +131,9 @@
             </div>
 
             <h2>{{ username }}</h2>
+
+            <h2>Amigos: {{ friends_count }}</h2>
+
 
             <h3>Meus últimos 3 posts:</h3>
             <div class="posts">

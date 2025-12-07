@@ -13,7 +13,9 @@ cursor.execute("""
          username TEXT UNIQUE,
          password TEXT,
          email TEXT UNIQUE,
-         bio TEXT
+         bio TEXT,
+         friends integer
+        
      )
  """)
 

@@ -124,8 +124,9 @@ def salvar():
     username = request.form.get('usuario', '').strip()
     password = request.form.get('senha', '').strip()
     email = request.form.get('email', '').strip()
+    friends = 0
     try:
-        execute_db("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", (username, password, email))
+        execute_db("INSERT INTO users (username, password, email, friends) VALUES (?, ?, ?, ?)", (username, password, email, friends))
     except:
         return redirect(url_for('register_page', msg='Erro: Usuário ou email já existe.'))
     return redirect(url_for('index'))
@@ -154,6 +155,16 @@ def logout():
 @login_required
 def home_page():
     me = session.get('user_id')
+
+    # Atualiza o contador de amigos do usuário logado
+    res = query_db(
+        "SELECT COUNT(*) AS total FROM friends WHERE status = 1 AND (user1_id = ? OR user2_id = ?)",
+        (me, me),
+        one=True
+    )
+    total_friends = res['total']
+    execute_db("UPDATE users SET friends = ? WHERE id = ?", (total_friends, me))
+
     # Posts meus ou de amigos (status=1)
     posts = query_db('''
         SELECT * FROM posts 
@@ -168,7 +179,8 @@ def home_page():
     for p in posts: p['timestamp_display'] = to_sp_display(p['timestamp'])
 
     return render_template('feed.html',
-        posts=posts, username=session.get('username'), user_id=str(me)
+        posts=posts, username=session.get('username'), user_id=str(me),
+        friends_count=total_friends  # já passa o número pro feed
     )
 
 @app.get('/perfil')
@@ -179,10 +191,20 @@ def meu_perfil(): return redirect(url_for('perfil', user_id=session.get('user_id
 @login_required
 def perfil(user_id):
     profile_user = query_db("SELECT id, username, email, bio FROM users WHERE id = ?", (user_id,), one=True)
-    if not profile_user: return redirect(url_for('home_page'))
+    if not profile_user: 
+        return redirect(url_for('home_page'))
 
     recent_posts = query_db("SELECT * FROM posts WHERE author_id = ? ORDER BY id DESC LIMIT 5", (user_id,))
-    for p in recent_posts: p['timestamp_display'] = to_sp_display(p['timestamp'])
+    for p in recent_posts: 
+        p['timestamp_display'] = to_sp_display(p['timestamp'])
+
+    # Contador de amigos do perfil que está sendo visitado
+    res = query_db(
+        "SELECT COUNT(*) AS total FROM friends WHERE status = 1 AND (user1_id = ? OR user2_id = ?)",
+        (user_id, user_id),
+        one=True
+    )
+    friends_count = res['total']
 
     curr, target = str(session.get('user_id')), str(user_id)
     return render_template('feed.html',
@@ -190,8 +212,11 @@ def perfil(user_id):
         username=session.get('username'), user_id=curr,
         is_my_profile=(curr == target),
         are_we_friends=are_friends(curr, target),
-        has_pending_request=check_pending_request(curr, target)
+        has_pending_request=check_pending_request(curr, target),
+        friends_count=friends_count  # <-- agora vai aparecer certinho
     )
+
+
 
 # ========================================
 # ROTAS DE AÇÃO
@@ -331,6 +356,7 @@ def api_reject():
         return jsonify({'ok': True})
     except:
         return jsonify({'ok': False}), 400
+    
 
 # API Likes
 @app.get('/api/post_likes')
