@@ -165,6 +165,11 @@ def home_page():
     total_friends = res['total']
     execute_db("UPDATE users SET friends = ? WHERE id = ?", (total_friends, me))
 
+    # Conta quantas amizades confirmadas (status=1) o usuário tem,
+    # verificando se ele está como user1 ou user2. Se for no /home, atualiza no banco.
+    # No /perfil apenas calcula e mostra, sem salvar nada.
+
+
     # Posts meus ou de amigos (status=1)
     posts = query_db('''
         SELECT * FROM posts 
